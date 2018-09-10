@@ -40,6 +40,9 @@ public class Customer extends BankEntity {
         this.name = name;
     }
 
+    public Customer() {
+    }
+
     public void addAccount(Account account) {
         this.accounts.add(account);
     }

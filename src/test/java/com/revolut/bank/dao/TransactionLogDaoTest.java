@@ -3,16 +3,9 @@ package com.revolut.bank.dao;
 import com.revolut.bank.model.TransactionLog;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.mockito.Mockito.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
 
 import java.util.List;
 
@@ -37,23 +30,38 @@ public class TransactionLogDaoTest {
         //given
 
         //when
-        transactionLogDao.persist(new TransactionLog(1, "", 1, 1));
+        TransactionLog transactionLog = transactionLogDao.persist(new TransactionLog( "", 1, 1));
 
         //then
-        assertTrue(true);
+        assertNotNull(transactionLog);
     }
 
     @Test
-    public void should_get_transaction_logs_of_seller() {
+    public void should_get_transaction_logs_of_sender() {
 
         //given
-        transactionLogDao.persist(new TransactionLog(1, "", 1, 1));
+        transactionLogDao.persist(new TransactionLog("", 1, 1));
 
         //when
-        List<TransactionLog> logs = this.transactionLogDao.findBySenderIdAndReceiver(1,1);
+        List<TransactionLog> logs = this.transactionLogDao.findBySenderId(1);
 
         //then
         assertNotNull(logs);
+        assertEquals(logs.size(), 1);
+    }
+
+    @Test
+    public void should_get_transaction_logs_of_receiver() {
+
+        //given
+        transactionLogDao.persist(new TransactionLog("", 1, 1));
+
+        //when
+        List<TransactionLog> logs = this.transactionLogDao.findByReceiverId(1);
+
+        //then
+        assertNotNull(logs);
+        assertEquals(logs.size(), 1);
     }
 
 }

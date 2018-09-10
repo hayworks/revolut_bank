@@ -3,10 +3,7 @@ package com.revolut.bank.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -14,10 +11,10 @@ import java.util.Date;
 @Getter
 public class MoneyTransferTransaction extends BankEntity {
 
-    @Column
+    @OneToOne(cascade = CascadeType.ALL)
     private Account senderAccount;
 
-    @Column
+    @OneToOne(cascade = CascadeType.ALL)
     private Account receiverAccount;
 
     @Column
@@ -38,14 +35,7 @@ public class MoneyTransferTransaction extends BankEntity {
         this.amount = amount;
     }
 
-    public MoneyTransferTransaction(long id, Account senderAccount, Account receiverAccount, BigDecimal amount, Date createDate, TransferStatus status, Date modifyDate) {
-        super(id);
-        this.senderAccount = senderAccount;
-        this.receiverAccount = receiverAccount;
-        this.amount = amount;
-        this.createDate = createDate;
-        this.status = status;
-        this.modifyDate = modifyDate;
+    public MoneyTransferTransaction() {
     }
 
     public Date getCreateDate() {

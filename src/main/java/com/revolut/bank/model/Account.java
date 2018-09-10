@@ -2,11 +2,10 @@ package com.revolut.bank.model;
 
 import com.revolut.bank.exception.AccountValidationException;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 public class Account extends BankEntity {
@@ -15,8 +14,10 @@ public class Account extends BankEntity {
     @Getter
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<TransactionLog> transactionLogs = new ArrayList<TransactionLog>();
+    @Column
+    @Getter
+    @Setter
+    private BigDecimal amount = new BigDecimal(0);
 
     public Account(String name) {
 
@@ -26,22 +27,7 @@ public class Account extends BankEntity {
         this.name = name;
     }
 
-    public Account(int id, String name) {
-
-        super(id);
-
-        if(name == null)
-            throw new AccountValidationException("Account name can not be null!!");
-
-        this.name = name;
-    }
-
-    public void addTransactionLog(TransactionLog log) {
-        this.transactionLogs.add(log);
-    }
-
-    public List<TransactionLog> getTransactionLogs() {
-        return Collections.unmodifiableList(transactionLogs);
+    public Account() {
     }
 
 }

@@ -12,15 +12,9 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Setter
-public class TransactionLogDao {
+public class TransactionLogDao extends BaseDao<TransactionLog> {
 
-    private EntityManager entityManager;
-
-    public void persist(TransactionLog transactionLog) {
-        this.entityManager.persist(transactionLog);
-    }
-
-    public List<TransactionLog> findBySenderIdAndReceiver(long senderId, long receiverId) {
+    public List<TransactionLog> findBySenderId(long senderId) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
@@ -28,12 +22,32 @@ public class TransactionLogDao {
 
         Root<TransactionLog> c = cq.from(TransactionLog.class);
         ParameterExpression<Long> sender = cb.parameter(Long.class);
-        ParameterExpression<Long> receiver = cb.parameter(Long.class);
-        cq.select(c).where(cb.and(cb.equal(c.get("senderId"), sender),cb.equal(c.get("receiverId"), receiver)));
+        cq.select(c).where(cb.and(cb.equal(c.get("senderId"), sender)));
 
         TypedQuery<TransactionLog> query = entityManager.createQuery(cq);
         query.setParameter(sender, senderId);
+
+        //TODO: pagination can be added: https://www.baeldung.com/jpa-pagination
+
+        return query.getResultList();
+
+    }
+
+    public List<TransactionLog> findByReceiverId(long receiverId) {
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<TransactionLog> cq = cb.createQuery(TransactionLog.class);
+
+        Root<TransactionLog> c = cq.from(TransactionLog.class);
+        ParameterExpression<Long> receiver = cb.parameter(Long.class);
+        cq.select(c).where(cb.equal(c.get("receiverId"), receiver));
+
+        TypedQuery<TransactionLog> query = entityManager.createQuery(cq);
         query.setParameter(receiver, receiverId);
+
+        //TODO: pagination can be added: https://www.baeldung.com/jpa-pagination
+
         return query.getResultList();
 
     }

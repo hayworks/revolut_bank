@@ -20,6 +20,20 @@ public class AccountTest {
         assertNotNull(account.getName());
     }
 
+    @Test
+    public void should_have_amount() {
+
+        //given
+        Account account = new Account("dummyName");;
+
+        //when
+
+
+        //then
+        assertEquals(0, account.getAmount().intValue());
+
+    }
+
     @Test(expected = AccountValidationException.class)
     public void should_throw_exception_when_assigning_null_name() {
 
@@ -33,18 +47,5 @@ public class AccountTest {
 
     }
 
-    @Test
-    public void should_account_have_transaction_logs() {
-
-        //given
-        Account account = new Account("dummy");
-
-        //when
-        account.addTransactionLog(new TransactionLog(1, "description", 1,1 ));
-
-        //then
-        assertTrue(account.getTransactionLogs() != null && account.getTransactionLogs().size() > 0);
-
-    }
 
 }

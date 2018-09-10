@@ -14,9 +14,11 @@ public class TransactionLog extends BankEntity {
     private String message;
 
     @Column
+    @Getter
     private long senderId;
 
     @Column
+    @Getter
     private long receiverId;
 
     public TransactionLog(MoneyTransferTransaction moneyTransferTransaction) {
@@ -31,9 +33,7 @@ public class TransactionLog extends BankEntity {
         this.receiverId = moneyTransferTransaction.getReceiverAccount().getId();
     }
 
-    public TransactionLog(long id, String message, long senderId, int receiverId) {
-
-        super(id);
+    public TransactionLog(String message, long senderId, int receiverId) {
 
         if(message == null)
             throw new TransactionLogValidationException("Transaction logs should contain a message");
@@ -42,5 +42,8 @@ public class TransactionLog extends BankEntity {
 
         this.senderId = senderId;
         this.receiverId = receiverId;
+    }
+
+    protected TransactionLog() {
     }
 }

@@ -16,7 +16,7 @@ public class TransactionLogTest {
         TransactionLog log = null;
 
         //when
-        log = new TransactionLog(1, "dummy message", 1, 1);
+        log = new TransactionLog("dummy message", 1, 1);
 
         //then
         assertNotNull(log.getMessage());
@@ -30,7 +30,7 @@ public class TransactionLogTest {
         TransactionLog log = null;
 
         //when
-        log = new TransactionLog(1, (String)null, 1, 1);
+        log = new TransactionLog((String)null, 1, 1);
 
         //then
 
