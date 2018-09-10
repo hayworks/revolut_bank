@@ -1,7 +1,9 @@
 package com.revolut.bank.model;
 
 import com.revolut.bank.exception.CustomerValidationException;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 public class Customer extends BankEntity {
 
     @Column
@@ -38,9 +41,6 @@ public class Customer extends BankEntity {
             throw new CustomerValidationException("Customer name can not be null1");
 
         this.name = name;
-    }
-
-    public Customer() {
     }
 
     public void addAccount(Account account) {

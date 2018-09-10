@@ -10,9 +10,17 @@ public abstract class BaseDao<T> {
     protected EntityManager entityManager;
 
     public T persist(T item) {
-        this.entityManager.getTransaction().begin();
+
+        boolean active = !this.entityManager.getTransaction().isActive();
+
+        if(active)
+            this.entityManager.getTransaction().begin();
+
         this.entityManager.persist(item);
-        this.entityManager.getTransaction().commit();
+
+        if(active)
+            this.entityManager.getTransaction().commit();
+
         return item;
     }
 
