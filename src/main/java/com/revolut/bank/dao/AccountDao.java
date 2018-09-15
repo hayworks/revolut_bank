@@ -82,4 +82,29 @@ public class AccountDao extends BaseDao<Account> {
     public boolean exists(long accountId) {
         return entityManager.find(Account.class, accountId) != null;
     }
+
+    public Account addMoney(long accountId, BigDecimal amount) {
+
+        Account acc;
+
+        entityManager.getTransaction().begin();
+
+        try {
+            acc = this.entityManager.find(Account.class, accountId, LockModeType.PESSIMISTIC_WRITE);
+
+            acc.setAmount(acc.getAmount().add(amount));
+
+            acc = this.persist(acc);
+
+            transactionLogDao.persist(new TransactionLog(accountId, accountId, amount, TransferStatus.SUCCESS));
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            transactionLogDao.persist(new TransactionLog(accountId, accountId, amount, TransferStatus.FAIL));
+            throw new MoneyTransferException(e);
+        }
+
+        return acc;
+    }
 }

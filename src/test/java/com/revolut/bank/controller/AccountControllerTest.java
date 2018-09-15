@@ -1,6 +1,7 @@
 package com.revolut.bank.controller;
 
 import com.revolut.bank.facade.AccountFacade;
+import com.revolut.bank.model.Account;
 import com.revolut.bank.model.MoneyTransferTransaction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,20 @@ public class AccountControllerTest {
 
         //then
         verify(accountFacade).transferMoney(anyLong(), anyLong(), any(BigDecimal.class));
+
+    }
+
+    @Test
+    public void should_add_money_successfully() {
+
+        //given
+        when(accountFacade.addMoney(anyLong(), any(BigDecimal.class))).thenReturn(new Account());
+
+        //when
+        accountController.addMoney(1L, 20);
+
+        //then
+        verify(accountFacade).addMoney(anyLong(), any(BigDecimal.class));
 
     }
 

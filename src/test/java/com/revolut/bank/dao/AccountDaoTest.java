@@ -115,4 +115,30 @@ public class AccountDaoTest {
 
     }
 
+    @Test
+    public void should_add_money_to_account() {
+
+        //given
+        Account account = this.accountDao.persist(new Account("dummyAccount"));
+
+        //when
+        account = this.accountDao.addMoney(account.getId(), new BigDecimal(50));
+
+        //then
+        assertEquals(account.getAmount(), new BigDecimal(50));
+
+    }
+
+    @Test(expected = MoneyTransferException.class)
+    public void should_throw_exception_if_account_not_exist() {
+
+        //given
+
+        //when
+        this.accountDao.addMoney(7, new BigDecimal(50));
+
+        //then
+
+    }
+
 }
