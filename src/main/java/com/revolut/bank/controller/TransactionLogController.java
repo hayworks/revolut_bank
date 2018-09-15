@@ -15,7 +15,7 @@ public class TransactionLogController {
         this.transactionLogFacade = transactionLogFacade;
     }
 
-    @Get("/transactions/{accountId}")
+    @Get("/transactions/sender/{accountId}")
     @Produces("application/json")
     public List<TransactionLog> getSenderLogs(@Param("accountId") long accountId) {
         return this.transactionLogFacade.getLogsOfSender(accountId);

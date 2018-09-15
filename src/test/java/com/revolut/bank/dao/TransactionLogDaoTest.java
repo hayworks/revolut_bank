@@ -59,4 +59,18 @@ public class TransactionLogDaoTest {
         assertEquals(logs.size(), 1);
     }
 
+    @Test
+    public void should_not_get_failed_transaction_logs_of_receiver() {
+
+        //given
+        transactionLogDao.persist(new TransactionLog(1, 2, new BigDecimal(10), TransferStatus.FAIL));
+
+        //when
+        List<TransactionLog> logs = this.transactionLogDao.findByReceiverId(2);
+
+        //then
+        assertNotNull(logs);
+        assertEquals(logs.size(), 0);
+    }
+
 }
