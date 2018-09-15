@@ -11,6 +11,10 @@ public class TransactionLogFacade {
 
     private TransactionLogDao transactionLogDao;
 
+    public TransactionLogFacade(TransactionLogDao transactionLogDao) {
+        this.transactionLogDao = transactionLogDao;
+    }
+
     public List<TransactionLog> getLogsOfSender(long senderId) {
         return transactionLogDao.findBySenderId(senderId);
     }

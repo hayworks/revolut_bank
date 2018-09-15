@@ -2,22 +2,24 @@ package com.revolut.bank.dao;
 
 import com.revolut.bank.exception.MoneyTransferException;
 import com.revolut.bank.model.Account;
+import com.revolut.bank.model.TransactionLog;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class AccountDaoTest extends BaseDaoTest {
+public class AccountDaoTest {
 
     private AccountDao accountDao;
+    private TransactionLogDao transactionLogDao;
 
     @Before
     public void before() {
-        super.before("account");
-        accountDao = new AccountDao();
-        accountDao.setEntityManager(entityManager);
+        transactionLogDao = new TransactionLogDao("transactionLog");
+        accountDao = new AccountDao("account", transactionLogDao);
     }
 
     @Test
@@ -56,7 +58,6 @@ public class AccountDaoTest extends BaseDaoTest {
         //when
         account.setAmount(new BigDecimal(20));
         account = this.accountDao.persist(account);
-        account = this.accountDao.findById(account.getId());
 
         //then
         assertNotNull(account);
@@ -65,7 +66,7 @@ public class AccountDaoTest extends BaseDaoTest {
     }
 
     @Test
-    public void should_transfer_money_succesfully() throws MoneyTransferException {
+    public void should_transfer_money_succesfully_and_log() throws MoneyTransferException {
 
         //given
         Account sender = this.accountDao.persist(new Account("sender Account"));
@@ -76,10 +77,12 @@ public class AccountDaoTest extends BaseDaoTest {
         this.accountDao.transferMoney(sender.getId(), receiver.getId(), new BigDecimal(20));
         sender = this.accountDao.findById(sender.getId());
         receiver = this.accountDao.findById(receiver.getId());
+        List<TransactionLog> transactionLog = this.transactionLogDao.findBySenderId(sender.getId());
 
         //then
         assertEquals(10, sender.getAmount().intValue());
         assertEquals(20, receiver.getAmount().intValue());
+        assertEquals(transactionLog.size(), 1);
 
     }
 
@@ -95,6 +98,20 @@ public class AccountDaoTest extends BaseDaoTest {
         this.accountDao.transferMoney(sender.getId(), receiver.getId(), new BigDecimal(20));
 
         //then
+
+    }
+
+    @Test
+    public void should_return_true_if_account_exist() {
+
+        //given
+        Account account = this.accountDao.persist(new Account("dummyAccount"));
+
+        //when
+        boolean result = accountDao.exists(account.getId());
+
+        //then
+        assertTrue(result);
 
     }
 

@@ -1,47 +1,45 @@
 package com.revolut.bank.model;
 
-import com.revolut.bank.exception.TransactionLogValidationException;
 import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
+@Getter
 public class TransactionLog extends BankEntity {
 
     @Column
-    @Getter
-    private String message;
-
-    @Column
-    @Getter
     private long senderId;
 
-    @Column
-    @Getter
+    @Column(nullable = false)
     private long receiverId;
 
-    public TransactionLog(MoneyTransferTransaction moneyTransferTransaction) {
-        this.message = new StringBuilder().append("Sender:").append(moneyTransferTransaction.getSenderAccount().getId())
-                .append(", Receiver:").append(moneyTransferTransaction.getReceiverAccount().getId())
-                .append(", Amount:").append(moneyTransferTransaction.getAmount())
-                .append(", CreateDate:").append(moneyTransferTransaction.getCreateDate())
-                .append(", ModifyDate:").append(moneyTransferTransaction.getModifyDate())
-                .toString();
+    @Column(nullable = false)
+    private BigDecimal amount;
 
-        this.senderId = moneyTransferTransaction.getSenderAccount().getId();
-        this.receiverId = moneyTransferTransaction.getReceiverAccount().getId();
+    @Column
+    private Date createDate = new Date();
+
+    @Enumerated(EnumType.STRING)
+    private TransferStatus status;
+
+    public TransactionLog(MoneyTransferTransaction moneyTransferTransaction, TransferStatus transferStatus) {
+        this.senderId = moneyTransferTransaction.getSenderAccountId();
+        this.receiverId = moneyTransferTransaction.getReceiverAccountId();
+        this.amount = moneyTransferTransaction.getAmount();
+        this.status = transferStatus;
     }
 
-    public TransactionLog(String message, long senderId, int receiverId) {
-
-        if(message == null)
-            throw new TransactionLogValidationException("Transaction logs should contain a message");
-
-        this.message = message;
-
+    public TransactionLog(long senderId, long receiverId, BigDecimal amount, TransferStatus transferStatus) {
         this.senderId = senderId;
         this.receiverId = receiverId;
+        this.amount = amount;
+        this.status = transferStatus;
     }
 
     protected TransactionLog() {

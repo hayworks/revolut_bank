@@ -38,10 +38,9 @@ public class AccountTest {
     public void should_throw_exception_when_assigning_null_name() {
 
         //given
-        Account account = null;
 
         //when
-        account = new Account(null);
+        new Account(null);
 
         //then
 

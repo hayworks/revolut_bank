@@ -1,53 +1,20 @@
 package com.revolut.bank.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
-@Entity
 @Getter
-public class MoneyTransferTransaction extends BankEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+public class MoneyTransferTransaction{
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Account senderAccount;
+    private Long senderAccountId;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Account receiverAccount;
+    private Long receiverAccountId;
 
-    @Column
     private BigDecimal amount;
 
-    @Column
-    private Date createDate = new Date();
-
-    @Enumerated(EnumType.STRING)
-    private TransferStatus status = TransferStatus.NEW;
-
-    @Setter
-    private Date modifyDate = new Date();
-
-    public MoneyTransferTransaction(Account senderAccount, Account receiverAccount, BigDecimal amount) {
-        this.senderAccount = senderAccount;
-        this.receiverAccount = receiverAccount;
-        this.amount = amount;
-    }
-
-    public MoneyTransferTransaction() {
-    }
-
-    public Date getCreateDate() {
-        return new Date(createDate.getTime());
-    }
-
-    public Date getModifyDate() {
-        return new Date(modifyDate.getTime());
-    }
-
-    public void setStatus(TransferStatus status) {
-        this.status = status;
-        this.modifyDate = new Date();
-    }
 }

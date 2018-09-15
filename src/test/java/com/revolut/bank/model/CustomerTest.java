@@ -26,7 +26,20 @@ public class CustomerTest {
         Customer customer = null;
 
         //when
-        customer = new Customer(null);
+        new Customer(null);
+
+        //then
+
+    }
+
+    @Test(expected = CustomerValidationException.class)
+    public void should_customer_with_id_throw_exception_with_null_name() {
+
+        //given
+        Customer customer = null;
+
+        //when
+        new Customer(1, null);
 
         //then
 

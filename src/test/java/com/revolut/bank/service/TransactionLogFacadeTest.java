@@ -3,12 +3,14 @@ package com.revolut.bank.service;
 import com.revolut.bank.dao.TransactionLogDao;
 import com.revolut.bank.facade.TransactionLogFacade;
 import com.revolut.bank.model.TransactionLog;
+import com.revolut.bank.model.TransferStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +31,8 @@ public class TransactionLogFacadeTest {
 
         //given
         List<TransactionLog> transactionLogs = new ArrayList<TransactionLog>() {{
-            add(new TransactionLog("message1", 1, 2));
-            add(new TransactionLog("message2", 1, 3));
+            add(new TransactionLog(1, 2, new BigDecimal(10), TransferStatus.SUCCESS));
+            add(new TransactionLog(1, 3, new BigDecimal(10), TransferStatus.SUCCESS));
         }};
         when(transactionLogDao.findBySenderId(anyLong())).thenReturn(transactionLogs);
 
@@ -46,8 +48,8 @@ public class TransactionLogFacadeTest {
 
         //given
         List<TransactionLog> transactionLogs = new ArrayList<TransactionLog>() {{
-            add(new TransactionLog("message1", 1, 2));
-            add(new TransactionLog("message2", 1, 3));
+            add(new TransactionLog(3, 1, new BigDecimal(10), TransferStatus.SUCCESS));
+            add(new TransactionLog(2, 1, new BigDecimal(10), TransferStatus.SUCCESS));
         }};
         when(transactionLogDao.findByReceiverId(anyLong())).thenReturn(transactionLogs);
 
@@ -62,7 +64,7 @@ public class TransactionLogFacadeTest {
     public void should_add_new_transaction_log() {
 
         //given
-        TransactionLog transactionLog = new TransactionLog("message1", 1, 2);
+        TransactionLog transactionLog = new TransactionLog(1, 2, new BigDecimal(10), TransferStatus.SUCCESS);
         when(transactionLogDao.persist(transactionLog)).thenReturn(transactionLog);
 
         //when

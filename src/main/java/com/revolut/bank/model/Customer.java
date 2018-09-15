@@ -2,6 +2,7 @@ package com.revolut.bank.model;
 
 import com.revolut.bank.exception.CustomerValidationException;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,14 +16,13 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
+@Data
 public class Customer extends BankEntity {
 
     @Column
-    @Getter
     private String name;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    @Getter
     private List<Account> accounts = new ArrayList<Account>();
 
     public Customer(String name) {
@@ -47,8 +47,5 @@ public class Customer extends BankEntity {
         this.accounts.add(account);
     }
 
-    public List<Account> getAccounts() {
-        return Collections.unmodifiableList(accounts);
-    }
 
 }

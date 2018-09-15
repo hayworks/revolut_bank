@@ -1,12 +1,11 @@
 package com.revolut.bank.dao;
 
 import com.revolut.bank.model.TransactionLog;
+import com.revolut.bank.model.TransferStatus;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -15,13 +14,9 @@ public class TransactionLogDaoTest {
 
     private TransactionLogDao transactionLogDao;
 
-    private EntityManager entityManager;
-
     @Before
     public void before() {
-        entityManager = Persistence.createEntityManagerFactory("transactionLog").createEntityManager();
-        transactionLogDao = new TransactionLogDao();
-        transactionLogDao.setEntityManager(entityManager);
+        transactionLogDao = new TransactionLogDao("transactionLog");
     }
 
     @Test
@@ -30,7 +25,7 @@ public class TransactionLogDaoTest {
         //given
 
         //when
-        TransactionLog transactionLog = transactionLogDao.persist(new TransactionLog( "", 1, 1));
+        TransactionLog transactionLog = transactionLogDao.persist(new TransactionLog(1, 2, new BigDecimal(10), TransferStatus.SUCCESS));
 
         //then
         assertNotNull(transactionLog);
@@ -40,7 +35,7 @@ public class TransactionLogDaoTest {
     public void should_get_transaction_logs_of_sender() {
 
         //given
-        transactionLogDao.persist(new TransactionLog("", 1, 1));
+        transactionLogDao.persist(new TransactionLog(1, 2, new BigDecimal(10), TransferStatus.SUCCESS));
 
         //when
         List<TransactionLog> logs = this.transactionLogDao.findBySenderId(1);
@@ -54,10 +49,10 @@ public class TransactionLogDaoTest {
     public void should_get_transaction_logs_of_receiver() {
 
         //given
-        transactionLogDao.persist(new TransactionLog("", 1, 1));
+        transactionLogDao.persist(new TransactionLog(1, 2, new BigDecimal(10), TransferStatus.SUCCESS));
 
         //when
-        List<TransactionLog> logs = this.transactionLogDao.findByReceiverId(1);
+        List<TransactionLog> logs = this.transactionLogDao.findByReceiverId(2);
 
         //then
         assertNotNull(logs);

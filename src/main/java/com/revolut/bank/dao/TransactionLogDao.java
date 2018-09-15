@@ -14,6 +14,10 @@ import java.util.List;
 @Setter
 public class TransactionLogDao extends BaseDao<TransactionLog> {
 
+    public TransactionLogDao(String persistenceUnitName) {
+        super(persistenceUnitName);
+    }
+
     public List<TransactionLog> findBySenderId(long senderId) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();

@@ -6,15 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class CustomerDaoTest extends BaseDaoTest {
+public class CustomerDaoTest {
 
     private CustomerDao customerDao;
 
     @Before
     public void before() {
-        super.before("customer");
-        customerDao = new CustomerDao();
-        customerDao.setEntityManager(entityManager);
+        customerDao = new CustomerDao("customer");
     }
 
     @Test
@@ -54,6 +52,7 @@ public class CustomerDaoTest extends BaseDaoTest {
 
     }
 
+    @Test
     public void should_get_customer_by_id() {
 
         //given

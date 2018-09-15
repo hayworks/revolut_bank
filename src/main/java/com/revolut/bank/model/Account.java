@@ -2,12 +2,14 @@ package com.revolut.bank.model;
 
 import com.revolut.bank.exception.AccountValidationException;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@NoArgsConstructor
 public class Account extends BankEntity {
 
     @Column
@@ -27,7 +29,10 @@ public class Account extends BankEntity {
         this.name = name;
     }
 
-    public Account() {
+    public Account(long id, String name) {
+
+        this(name);
+        this.id = id;
     }
 
 }
