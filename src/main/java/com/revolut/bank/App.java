@@ -49,9 +49,9 @@ public class App {
         // http-prepare
         builder
                 .http(8080)
-                .annotatedService(customerController, new JacksonRequestConverterFunction(), new JacksonResponseConverterFunction())
-                .annotatedService(accountController, new JacksonRequestConverterFunction(), new JacksonResponseConverterFunction())
-                .annotatedService(transactionLogController, new JacksonRequestConverterFunction(), new JacksonResponseConverterFunction());
+                .annotatedService(customerController, new JacksonRequestConverterFunction(), new JacksonResponseConverterFunction(), new BankExceptionHandler())
+                .annotatedService(accountController, new JacksonRequestConverterFunction(), new JacksonResponseConverterFunction(), new BankExceptionHandler())
+                .annotatedService(transactionLogController, new JacksonRequestConverterFunction(), new JacksonResponseConverterFunction(), new BankExceptionHandler());
 
         //server
         final Server server = builder.build();
