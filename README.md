@@ -12,4 +12,6 @@ The tech stack that has been used are:
 
 There is also a <b>POSTMAN</b> collection as attached:
 
-<b>bank.postman_collection.json</b>
+<a href="bank.postman_collection.json">bank.postman_collection.json</>
+
+<b>NOTE: Integration tests are npt 100% complete. A sample is given ony for one class "AccountController"</b>
