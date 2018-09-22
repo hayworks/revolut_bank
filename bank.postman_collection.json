@@ -182,18 +182,12 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"value": "application/json"
 					}
 				],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "amount",
-							"value": "50.2",
-							"type": "text"
-						}
-					]
+					"mode": "raw",
+					"raw": "50.2"
 				},
 				"url": {
 					"raw": "http://localhost:8080/account/2",

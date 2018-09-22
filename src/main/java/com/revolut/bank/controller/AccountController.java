@@ -4,11 +4,13 @@ import com.linecorp.armeria.server.annotation.*;
 import com.revolut.bank.facade.AccountFacade;
 import com.revolut.bank.model.Account;
 import com.revolut.bank.model.MoneyTransferTransaction;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 
 public class AccountController {
 
+    @Getter
     private AccountFacade accountFacade;
 
     public AccountController(AccountFacade accountFacade) {
@@ -25,7 +27,7 @@ public class AccountController {
 
     @Put("/account/{accountId}")
     @ProducesJson
-    public Account addMoney(@Param("accountId") long accountId, @Param("amount") double amount) {
+    public Account addMoney(@Param("accountId") long accountId, @RequestObject double amount) {
         return this.accountFacade.addMoney(accountId, new BigDecimal(amount).setScale(2));
     }
 }
